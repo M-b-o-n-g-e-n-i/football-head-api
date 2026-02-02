@@ -1,2 +1,30 @@
 # football-head-api
-A backend service built in Go that takes in match data and exposes REST endpoints to compute league and team statistics. The project focuses on backend fundamentals including HTTP servers, data aggregation, error handling, and clean API design, with an emphasis on performance and simplicity.
+**Overview**
+
+This project is a backend service written in Go that analyzes English Premier League (EPL) match data from the 2023–2024 season. The API ingests match-level data from a CSV file and exposes REST endpoints that compute league tables, team statistics, and match insights.
+The project focuses on backend fundamentals such as data modeling, aggregation, clean API design, and performance-aware in-memory processing.
+
+**Why Go?**
+
+Go was chosen for its simplicity, strong standard library, and suitability for backend and data-processing workloads. The project avoids heavy frameworks to better understand HTTP servers, concurrency primitives, and clean separation of concerns.
+
+**Features**
+
+- Load and parse EPL match data from CSV
+- Compute league tables and team statistics
+- Expose RESTful endpoints using net/http
+
+**API Endpoints**
+
+- GET /health
+- GET /teams
+- GET /league/table
+- GET /teams/{team}/stats
+- GET /matches?team={team}
+
+**Future Improvements**
+
+- Persist data using a database
+- Add caching for computed stats
+- Add basic authentication
+- Support multiple seasons
