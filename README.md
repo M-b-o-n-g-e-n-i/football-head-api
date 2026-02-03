@@ -20,7 +20,7 @@ Go was chosen for its simplicity, strong standard library, and suitability for b
 - GET /teams
 - GET /league/table
 - GET /teams/{team}/stats
-- GET /matches?team={team}
+- GET /matches?team={team} (In progress...)
 
 **Future Improvements**
 
