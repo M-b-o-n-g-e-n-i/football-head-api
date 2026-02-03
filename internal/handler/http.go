@@ -1,1 +1,72 @@
 package handler
+
+import (
+	"encoding/json"
+	"net/http"
+
+	"football-head-api/internal/service"
+)
+
+// APIHandler holds our service and provides HTTP handler methods
+// Think of this as the "HTTP layer" - it knows about HTTP but delegates business logic to the service
+type APIHandler struct {
+	statsService *service.StatsService
+}
+
+// NewAPIHandler creates a new APIHandler with the provided service
+func NewAPIHandler(statsService *service.StatsService) *APIHandler {
+	return &APIHandler{
+		statsService: statsService,
+	}
+}
+
+// Health handles GET /health
+// This is a simple "ping" endpoint to check if the server is running
+func (h *APIHandler) Health(w http.ResponseWriter, r *http.Request) {
+	// Headers are metadata about the response
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	// We create a struct to hold our response data
+	// json tags (like `json:"status"`) tell the JSON encoder what field names to use
+	response := struct {
+		Status  string `json:"status"`
+		Message string `json:"message"`
+		Matches int    `json:"total_matches"`
+	}{
+		Status:  "healthy",
+		Message: "Football Head API is running",
+		Matches: h.statsService.GetMatchCount(),
+	}
+
+	// json.NewEncoder(w) creates an encoder that writes to w (our response writer)
+	// .Encode(response) converts our struct to JSON and writes it
+	json.NewEncoder(w).Encode(response)
+}
+
+// Teams handles GET /teams
+// Returns a list of all teams in the league
+func (h *APIHandler) Teams(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	teams := h.statsService.GetAllTeams()
+
+	response := struct {
+		Teams []string `json:"teams"`
+		Count int      `json:"count"`
+	}{
+		Teams: teams,
+		Count: len(teams),
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
+
+}
+
+// RegisterRoutes sets up all our HTTP routes
+// This function tells Go's HTTP server which URLs map to which handlers
+func (h *APIHandler) RegisterRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("/health", h.Health)
+	mux.HandleFunc("/teams", h.Teams)
+}
