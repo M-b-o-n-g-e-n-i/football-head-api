@@ -53,6 +53,8 @@ func main() {
 	fmt.Println("Available endpoints:")
 	fmt.Printf("GET http://localhost:%s/health\n", port)
 	fmt.Printf("GET http://localhost:%s/teams\n", port)
+	fmt.Printf("GET http://localhost:%s/league/table\n", port)
+	fmt.Printf("GET http://localhost:%s/teams/{team}/stats\n", port)
 	fmt.Println()
 	fmt.Printf("Server is running on http://localhost:%s\n", port)
 	fmt.Println("Press Ctrl+C to stop")
